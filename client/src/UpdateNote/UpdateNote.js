@@ -1,17 +1,30 @@
-import {useState} from 'react';
-import './Form.css';
+import {useState, useEffect} from 'react';
+import '../Form/Form.css';
 import axios from 'axios';
+import Moment from 'moment';
 
 //Import config
 import Config from '../config';
 
-const Form = () => {
+const UpdateNote = (props) => {
 
     const [date, setDate] = useState('');
     const [diet, setDiet] = useState('');
     const [mood, setMood] = useState('');
     const [symptoms, setSymptoms] = useState('');
     const [exercise, setExercise] = useState('');
+
+    useEffect(() => {
+        const id = props.match.params.id;
+        axios.get(`${Config.apiBaseUrl}/notes/${id}`)
+        .then(res => { 
+            setDate(res.data.date)
+            setDiet(res.data.diet)
+            setMood(res.data.mood)
+            setSymptoms(res.data.symptoms)
+            setExercise(res.data.exercise)
+        })
+    }, [])
 
     const handleChange = (e) => {
         const name = e.target.name;
@@ -33,6 +46,8 @@ const Form = () => {
         //Prevent Default Form Behavior
         e.preventDefault();
 
+        const id = props.match.params.id;
+
         //Create object with form values
         const note = {
             date,
@@ -43,26 +58,16 @@ const Form = () => {
         }
         
         //Post Note using API
-        axios.post(`${Config.apiBaseUrl}/notes`, note)
-       
-
-        //Clear state for all form fields
-        setDate('');
-        setDiet('');
-        setMood('');
-        setSymptoms('');
-        setExercise('');
-        
-        
+        axios.put(`${Config.apiBaseUrl}/notes/${id}`, note)
     }
 
     return (
         <div className="form">
-            <h2>Add Note</h2>
+            <h2>Update Note</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="date" className="form-label">Date</label>
-                    <input type="date" className="form-control" id="date" name="date" value={date} onChange={handleChange} required/>
+                    <input type="text" className="form-control" id="date" name="date" value={date} onChange={handleChange} required/>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="diet" className="form-label">Diet</label>
@@ -82,8 +87,9 @@ const Form = () => {
                 </div>
                 <button type="submit" className="btn btn-primary w-75">Submit</button>
             </form>
+            <a className="btn w-50 mt-2 btn-secondary mt-5" href={`/`}>Go Home</a>
         </div>
     )
 }
 
-export default Form;
+export default UpdateNote

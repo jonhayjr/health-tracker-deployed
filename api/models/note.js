@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
       autoIncrement: true,
     },
     date: {
-      type: Sequelize.DATE,
+      type: Sequelize.DATEONLY,
       allowNull: false,
       validate: {
         notNull: {

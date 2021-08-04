@@ -1,16 +1,22 @@
 import {useState, useEffect} from 'react';
+import {Link} from 'react-router-dom';
 
 //Import modules
 import axios from 'axios';
 import Moment from 'moment';
 
 //import CSS
-import './NoteDetail.css';
+import './Notes.css';
 
 //Import config
 import Config from '../config';
 
-const NoteDetail = () => {
+//Import Components
+import Form from '../Form/Form';
+import Button from '../Button/Button';
+
+
+const Notes = ({onClick, showAddTask}) => {
     const [notes, setNotes] = useState('');
 
     useEffect(() => {
@@ -44,7 +50,7 @@ const NoteDetail = () => {
                     <li className="list-group-item">Symptoms: {note.symptoms}</li>
                     <li className="list-group-item">Exercise: {note.exercise}</li>
                 </ul>
-
+                <a className="btn btn-primary w-50 mt-2 text-white" href={`/projects/${note.id}/update`}>Update</a>
                 <button data-index={note.id} type="submit" className="btn btn-primary w-50 mt-2" onClick={handleDelete}>Delete</button>
             </div>
         )
@@ -52,12 +58,18 @@ const NoteDetail = () => {
     : '';
 
     return (
-        <div className="note-container mb-5">
-          {
-             noteElements
-          }
+        <div className="mb-5">
+            <Button onClick={onClick} showAddTask={showAddTask}/>
+            {
+                showAddTask && <Form />
+            }
+            <div className="note-container mt-5">
+                {
+                noteElements
+                }
+            </div>
         </div>
     )
 }
 
-export default NoteDetail
+export default Notes
