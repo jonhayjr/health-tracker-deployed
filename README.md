@@ -9,5 +9,5 @@ This app allows users to post new health notes and see previous notes that they 
 5. Next, change the directory to the client folder using the command `cd client`.
 6. In this folder, run `npm install` to install the necessary dependencies and then run the command `npm start` to start the app.
 7. The React app will be open up in your browser with [`localhost:3000`](http://localhost:3000/).
-8. Click [`here`]() for a live preview.
+8. Click [`here`](https://health-tracker-jh.netlify.app/) for a live preview.
 
