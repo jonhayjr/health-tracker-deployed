@@ -1,5 +1,8 @@
 import {useState, useEffect} from 'react';
+//Import CSS
 import '../Form/Form.css';
+
+//Import modules
 import axios from 'axios';
 import Moment from 'moment';
 
@@ -13,8 +16,12 @@ const UpdateNote = (props) => {
     const [mood, setMood] = useState('');
     const [symptoms, setSymptoms] = useState('');
     const [exercise, setExercise] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        //Set isLoading to true  
+        setIsLoading(true);
+
         const id = props.match.params.id;
         axios.get(`${Config.apiBaseUrl}/notes/${id}`)
         .then(res => { 
@@ -24,6 +31,9 @@ const UpdateNote = (props) => {
             setSymptoms(res.data.symptoms)
             setExercise(res.data.exercise)
         })
+
+         //Set isLoading to false
+         setIsLoading(false);
     }, [])
 
     const handleChange = (e) => {
@@ -64,7 +74,10 @@ const UpdateNote = (props) => {
     return (
         <div className="form">
             <h2>Update Note</h2>
-            <form onSubmit={handleSubmit}>
+            { isLoading
+            ? <p className="text-center lead mt-4">Loading....</p>
+            :
+                <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="date" className="form-label">Date</label>
                     <input type="text" className="form-control" id="date" name="date" value={date} onChange={handleChange} required/>
@@ -86,7 +99,7 @@ const UpdateNote = (props) => {
                     <textarea className="form-control" id="exercise" name="exercise" rows="3" onChange={handleChange} value={exercise}></textarea>
                 </div>
                 <button type="submit" className="btn btn-primary w-75">Submit</button>
-            </form>
+            </form>}
             <a className="btn w-50 mt-2 btn-secondary mt-5" href={`/`}>Go Home</a>
         </div>
     )

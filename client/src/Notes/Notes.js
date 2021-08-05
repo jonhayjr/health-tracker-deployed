@@ -1,5 +1,4 @@
 import {useState, useEffect} from 'react';
-import {Link} from 'react-router-dom';
 
 //Import modules
 import axios from 'axios';
@@ -18,12 +17,19 @@ import Button from '../Button/Button';
 
 const Notes = ({onClick, showAddTask}) => {
     const [notes, setNotes] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        //Set isLoading to true 
+        setIsLoading(true);
+
         axios.get(`${Config.apiBaseUrl}/notes`)
-        .then(res => 
+        .then(res => { 
             setNotes(res.data)
-        )
+        })
+
+          //Set isLoading to false
+          setIsLoading(false)
     }, [notes])
 
     const handleDelete = (e) => {
@@ -63,11 +69,16 @@ const Notes = ({onClick, showAddTask}) => {
             {
                 showAddTask && <Form />
             }
+            {
+            isLoading 
+            ? <p className='text-center lead my-4'>Loading...</p>
+            :
             <div className="note-container mt-5">
                 {
                 noteElements
                 }
             </div>
+            }
         </div>
     )
 }
