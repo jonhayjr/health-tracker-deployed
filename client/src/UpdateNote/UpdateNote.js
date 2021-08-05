@@ -4,13 +4,13 @@ import '../Form/Form.css';
 
 //Import modules
 import axios from 'axios';
-import Moment from 'moment';
 
 //Import config
 import Config from '../config';
 
 const UpdateNote = (props) => {
 
+    const [notes, setNotes] = useState('');
     const [date, setDate] = useState('');
     const [diet, setDiet] = useState('');
     const [mood, setMood] = useState('');
@@ -25,6 +25,7 @@ const UpdateNote = (props) => {
         const id = props.match.params.id;
         axios.get(`${Config.apiBaseUrl}/notes/${id}`)
         .then(res => { 
+            setNotes(res.data)
             setDate(res.data.date)
             setDiet(res.data.diet)
             setMood(res.data.mood)
@@ -34,7 +35,7 @@ const UpdateNote = (props) => {
 
          //Set isLoading to false
          setIsLoading(false);
-    }, [])
+    }, [props.match.params.id])
 
     const handleChange = (e) => {
         const name = e.target.name;
@@ -71,10 +72,11 @@ const UpdateNote = (props) => {
         axios.put(`${Config.apiBaseUrl}/notes/${id}`, note)
     }
 
+
     return (
         <div className="form">
             <h2>Update Note</h2>
-            { isLoading
+            { isLoading && notes
             ? <p className="text-center lead mt-4">Loading....</p>
             :
                 <form onSubmit={handleSubmit}>
