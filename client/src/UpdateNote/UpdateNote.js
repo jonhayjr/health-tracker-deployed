@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+
 //Import CSS
 import '../Form/Form.css';
 
@@ -17,25 +18,34 @@ const UpdateNote = (props) => {
     const [symptoms, setSymptoms] = useState('');
     const [exercise, setExercise] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [previousId, setPreviousId] = useState('');
 
+    
     useEffect(() => {
-        //Set isLoading to true  
-        setIsLoading(true);
-
+        //Current id from params
         const id = props.match.params.id;
-        axios.get(`${Config.apiBaseUrl}/notes/${id}`)
-        .then(res => { 
-            setNotes(res.data)
-            setDate(res.data.date)
-            setDiet(res.data.diet)
-            setMood(res.data.mood)
-            setSymptoms(res.data.symptoms)
-            setExercise(res.data.exercise)
-        })
 
-         //Set isLoading to false
-         setIsLoading(false);
-    }, [props.match.params.id])
+        //Only make api call if it's a new id
+        if (previousId !== id) {
+            //Set isLoading to true  
+            setIsLoading(true);
+
+            //Get note data from api
+            axios.get(`${Config.apiBaseUrl}/notes/${id}`)
+            .then(res => { 
+                setNotes(res.data)
+                setDate(res.data.date)
+                setDiet(res.data.diet)
+                setMood(res.data.mood)
+                setSymptoms(res.data.symptoms)
+                setExercise(res.data.exercise)
+                setPreviousId(id)
+            })
+
+            //Set isLoading to false
+            setIsLoading(false);
+        }
+    }, [props.match.params.id, previousId])
 
     const handleChange = (e) => {
         const name = e.target.name;
@@ -102,7 +112,7 @@ const UpdateNote = (props) => {
                 </div>
                 <button type="submit" className="btn btn-primary w-75">Submit</button>
             </form>}
-            <a className="btn w-50 mt-2 btn-secondary mt-5" href={`/`}>Go Home</a>
+            <a className="btn w-75 mt-2 btn-secondary mt-5" href={`/`}>Go Home</a>
         </div>
     )
 }

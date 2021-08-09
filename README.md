@@ -1,5 +1,5 @@
 # Health Tracker App
-This app allows users to post new health notes and see previous notes that they wrote.  This was built using React for the frontend and Express and MySql for the backend.
+This app allows users to post new health notes and see previous notes that they wrote.  This was built using React for the frontend and Express and MySQL for the backend.
 
 ## Getting Started
 1. Download or clone repository.
