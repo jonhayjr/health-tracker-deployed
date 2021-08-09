@@ -57,7 +57,7 @@ const Notes = ({onClick, showAddTask}) => {
                     <li className="list-group-item">Exercise: {note.exercise}</li>
                 </ul>
                 <a className="btn btn-primary w-50 mt-2 text-white" href={`/projects/${note.id}/update`}>Update</a>
-                <button data-index={note.id} type="submit" className="btn btn-primary w-50 mt-2" onClick={handleDelete}>Delete</button>
+                <button data-index={note.id} type="submit" className="btn btn-primary w-50 mt-2 mb-2" onClick={handleDelete}>Delete</button>
             </div>
         )
     )
